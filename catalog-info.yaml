@@ -1,0 +1,66 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: awhic-poi-backend-app-dev
+  annotations:
+    argocd/app-name: awhic-poi-backend-app-dev
+    backstage.io/kubernetes-id: awhic-poi-backend-app
+    backstage.io/kubernetes-namespace: awhic
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: rhdh-deploy/awhic-backend
+    janus-idp.io/tekton-enabled: 'true'
+  tags:
+    - java
+    - quarkus
+    - maven
+    - workshop
+  links:
+    - url: https://console-openshift-console.apps.a1jxqhzp.eastus2.aroapp.io/dev-pipelines/ns/awhic/
+      title: Pipelines
+      icon: web
+    - url: https://console-openshift-console.apps.a1jxqhzp.eastus2.aroapp.io/k8s/ns/awhic/deployments/awhic-poi-backend-app
+      title: Deployment
+      icon: web
+    - url: https://devspaces.apps.a1jxqhzp.eastus2.aroapp.io/#https://github.com/rhdh-deploy/awhic-backend?che-editor=che-incubator/che-code/latest&devfilePath=.devfile-vscode.yaml
+      title: OpenShift Dev Spaces (VS Code)
+      icon: web
+spec:
+  type: service
+  lifecycle: production
+  owner: "user:default/awhic"
+  system: workshop-system-awhic
+  providesApis:
+    - backend-api-awhic
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: workshop-system-awhic
+  tags:
+    - backstage
+    - janus-idp
+    - openshift
+    - workshop
+    - rh-summit
+spec:
+  owner: "user:default/awhic"
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: backend-api-awhic
+  description: API surface used by workshop attendees to initialize and load parks data
+  links:
+    - url: http://awhic-poi-backend-app-awhic.apps.a1jxqhzp.eastus2.aroapp.io/q/swagger-ui
+      title: Swagger UI
+      icon: web
+    - url: https://github.com/rhdh-deploy/awhic-backend/tree/main/src/main/resources/META-INF/openapi.yaml
+      title: API Spec
+      icon: code
+spec:
+  type: openapi
+  lifecycle: production
+  owner: "user:default/awhic"
+  system: workshop-system-awhic
+  definition:
+    $text: https://github.com/rhdh-deploy/awhic-backend/tree/main/src/main/resources/META-INF/openapi.yaml
